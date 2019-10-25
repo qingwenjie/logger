@@ -26,8 +26,8 @@ const (
 )
 
 var (
-	TextLog *logger
-	FileLog *logger
+	Text *logger
+	File *logger
 )
 
 type logger struct {
