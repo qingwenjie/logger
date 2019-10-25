@@ -14,13 +14,15 @@ import (
 )
 
 const (
-	PanicLevel   = logrus.PanicLevel
-	FatalLevel   = logrus.FatalLevel
-	ErrorLevel   = logrus.ErrorLevel
-	InfoLevel    = logrus.InfoLevel
-	DebugLevel   = logrus.DebugLevel
-	TraceLevel   = logrus.TraceLevel
-	DefaultLevel = TraceLevel
+	PanicLevel    = logrus.PanicLevel
+	FatalLevel    = logrus.FatalLevel
+	ErrorLevel    = logrus.ErrorLevel
+	InfoLevel     = logrus.InfoLevel
+	DebugLevel    = logrus.DebugLevel
+	TraceLevel    = logrus.TraceLevel
+	DefaultLevel  = TraceLevel
+	LOG_TYPE_FILE = "FILE"
+	LOG_TYPE_TEXT = "TEXT"
 )
 
 var (
@@ -38,7 +40,7 @@ type logger struct {
 type Options struct {
 	Level       logrus.Level
 	LogType     string
-	RuntimePath string
+	LogFilePath string
 }
 
 func (l *logger) Info(args ... interface{}) {
@@ -126,10 +128,11 @@ func (l *logger) newFile() *logrus.Logger {
 			l.ErrorNew = e
 			return nil
 		} else {
-			l.runtime = path.Join(p, "runtime")
+			//l.runtime = path.Join(p, "logs")
+			l.runtime = p
 		}
 	} else {
-		l.runtime = path.Join(l.runtime, "runtime")
+		//l.runtime = path.Join(l.runtime, "logs")
 	}
 	if file, err := os.Stat(l.runtime); err != nil && os.IsNotExist(err) {
 		e := os.MkdirAll(l.runtime, 0755)
@@ -203,13 +206,13 @@ func New(options *Options) *logger {
 	if options == nil {
 		options = DefaultOptions()
 	} else if options.LogType == "" {
-		options.LogType = "file"
-	} else if options.RuntimePath == "" {
-		options.RuntimePath = "runtime"
+		options.LogType = LOG_TYPE_FILE
+	} else if options.LogFilePath == "" {
+		//options.LogFilePath = "logs"
 	}
 	logger := logger{}
-	if options.LogType == "file" {
-		logger.runtime = options.RuntimePath
+	if options.LogType == LOG_TYPE_FILE {
+		logger.runtime = options.LogFilePath
 		logger.newLog = logger.newFile()
 	} else {
 		logger.newLog = logrus.New()
@@ -225,7 +228,7 @@ func New(options *Options) *logger {
 func DefaultOptions() *Options {
 	return &Options{
 		Level:       DefaultLevel,
-		LogType:     "file",
-		RuntimePath: "runtime",
+		LogType:     LOG_TYPE_FILE,
+		LogFilePath: "logs",
 	}
 }
