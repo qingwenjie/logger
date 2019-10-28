@@ -232,3 +232,4 @@ func DefaultOptions() *Options {
 		LogFilePath: "logs",
 	}
 }
+
