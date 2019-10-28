@@ -3,13 +3,13 @@ package logger
 import "testing"
 
 func TestInfo(t *testing.T) {
-	TextLog = New(&Options{
+	Text = New(&Options{
 		Level:       DefaultLevel,
 		LogType:     "text",
 		LogFilePath: "runtime",
 	})
 
-	TextLog.Info("I'm info")
+	Text.Info("I'm info")
 }
 
 //func Test_DefaultOptions(t *testing.T) {
