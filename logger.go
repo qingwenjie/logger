@@ -52,7 +52,7 @@ func (l *logger) Info(args ... interface{}) {
 func (l *logger) Infof(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Infof(format, args)
+	l.newLog.Infof(format, args...)
 }
 
 func (l *logger) Error(args ... interface{}) {
@@ -64,7 +64,7 @@ func (l *logger) Error(args ... interface{}) {
 func (l *logger) Errorf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Errorf(format, args)
+	l.newLog.Errorf(format, args...)
 }
 
 func (l *logger) Debug(args ... interface{}) {
@@ -76,7 +76,7 @@ func (l *logger) Debug(args ... interface{}) {
 func (l *logger) Debugf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Debugf(format, args)
+	l.newLog.Debugf(format, args...)
 }
 
 func (l *logger) Trace(args ... interface{}) {
@@ -88,7 +88,7 @@ func (l *logger) Trace(args ... interface{}) {
 func (l *logger) Tracef(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Tracef(format, args)
+	l.newLog.Tracef(format, args...)
 }
 
 func (l *logger) Fatal(args ... interface{}) {
@@ -100,7 +100,7 @@ func (l *logger) Fatal(args ... interface{}) {
 func (l *logger) Fatalf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Fatalf(format, args)
+	l.newLog.Fatalf(format, args...)
 }
 
 func (l *logger) Panic(args ... interface{}) {
@@ -112,7 +112,7 @@ func (l *logger) Panic(args ... interface{}) {
 func (l *logger) Panicf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Panicf(format, args)
+	l.newLog.Panicf(format, args...)
 }
 
 func fileLine() string {
