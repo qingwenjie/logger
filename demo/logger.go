@@ -3,14 +3,19 @@ package main
 import "github.com/qingwenjie/logger"
 
 func main() {
-	logger.Text = logger.New(&logger.Options{
+	logger.Log = logger.New(&logger.Options{
 		Level:       logger.DefaultLevel,
-		LogType:     logger.LOG_TYPE_FILE,
 		LogFilePath: "",
 	})
 	t()
 }
 
 func t() {
-	logger.Text.Info("test info")
+	logger.Log.Info("Info info")
+	logger.Log.Infof("Info info%s-%d","tttt",111)
+	logger.Log.Error("Error info")
+	logger.Log.Debug("Debug info")
+	logger.Log.Trace("Trace info")
+	logger.Log.Panic("Panic info")
+	logger.Log.Fatal("Fatal info")
 }

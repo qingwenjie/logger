@@ -14,20 +14,19 @@ import (
 )
 
 const (
-	PanicLevel    = logrus.PanicLevel
-	FatalLevel    = logrus.FatalLevel
-	ErrorLevel    = logrus.ErrorLevel
-	InfoLevel     = logrus.InfoLevel
-	DebugLevel    = logrus.DebugLevel
-	TraceLevel    = logrus.TraceLevel
-	DefaultLevel  = TraceLevel
-	LOG_TYPE_FILE = "FILE"
-	LOG_TYPE_TEXT = "TEXT"
+	PanicLevel   = logrus.PanicLevel
+	FatalLevel   = logrus.FatalLevel
+	ErrorLevel   = logrus.ErrorLevel
+	InfoLevel    = logrus.InfoLevel
+	DebugLevel   = logrus.DebugLevel
+	TraceLevel   = logrus.TraceLevel
+	DefaultLevel = TraceLevel
+	//LOG_TYPE_FILE = "FILE"
+	//LOG_TYPE_TEXT = "TEXT"
 )
 
 var (
-	Text *logger
-	File *logger
+	Log *logger
 )
 
 type logger struct {
@@ -38,8 +37,8 @@ type logger struct {
 }
 
 type Options struct {
-	Level       logrus.Level
-	LogType     string
+	Level logrus.Level
+	//LogType     string
 	LogFilePath string
 }
 
@@ -147,56 +146,62 @@ func (l *logger) newFile() *logrus.Logger {
 			return nil
 		}
 	}
-	infoWriter, _ := rotatelogs.New(
-		path.Join(l.runtime, "info-%Y%m%d.log"),
-		//rotatelogs.WithLinkName(p+".info"), //把当前日志文件软链到 p+".info"
-		//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
-		rotatelogs.WithRotationCount(10),                              //保留30天的数据
-		rotatelogs.WithRotationTime(time.Duration(86400)*time.Second), //每天切割一次
-	)
-	errorWriter, _ := rotatelogs.New(
-		path.Join(l.runtime, "error-%Y%m%d.log"),
-		//rotatelogs.WithLinkName(p+".error"),
-		//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
-		rotatelogs.WithRotationCount(10),
-		rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
-	)
-	debugWriter, _ := rotatelogs.New(
-		path.Join(l.runtime, "debug-%Y%m%d.log"),
-		//rotatelogs.WithLinkName(p+".debug"),
-		//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
-		rotatelogs.WithRotationCount(10),
-		rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
-	)
-	traceWriter, _ := rotatelogs.New(
-		path.Join(l.runtime, "trace-%Y%m%d.log"),
-		//rotatelogs.WithLinkName(p+".trace"),
-		//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
-		rotatelogs.WithRotationCount(10),
-		rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
-	)
-	fatalWriter, _ := rotatelogs.New(
-		path.Join(l.runtime, "fatal-%Y%m%d.log"),
-		//rotatelogs.WithLinkName(p+".fatal"),
-		//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
-		rotatelogs.WithRotationCount(10),
-		rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
-	)
-	panicWriter, _ := rotatelogs.New(
-		path.Join(l.runtime, "panic-%Y%m%d.log"),
-		//rotatelogs.WithLinkName(p+".panic"),
-		//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
-		rotatelogs.WithRotationCount(10),
-		rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
+	//infoWriter, _ := rotatelogs.New(
+	//	path.Join(l.runtime, "info-%Y%m%d.log"),
+	//	//rotatelogs.WithLinkName(p+".info"), //把当前日志文件软链到 p+".info"
+	//	//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
+	//	rotatelogs.WithRotationCount(10),                              //保留30天的数据
+	//	rotatelogs.WithRotationTime(time.Duration(86400)*time.Second), //每天切割一次
+	//)
+	//errorWriter, _ := rotatelogs.New(
+	//	path.Join(l.runtime, "error-%Y%m%d.log"),
+	//	//rotatelogs.WithLinkName(p+".error"),
+	//	//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
+	//	rotatelogs.WithRotationCount(10),
+	//	rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
+	//)
+	//debugWriter, _ := rotatelogs.New(
+	//	path.Join(l.runtime, "debug-%Y%m%d.log"),
+	//	//rotatelogs.WithLinkName(p+".debug"),
+	//	//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
+	//	rotatelogs.WithRotationCount(10),
+	//	rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
+	//)
+	//traceWriter, _ := rotatelogs.New(
+	//	path.Join(l.runtime, "trace-%Y%m%d.log"),
+	//	//rotatelogs.WithLinkName(p+".trace"),
+	//	//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
+	//	rotatelogs.WithRotationCount(10),
+	//	rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
+	//)
+	//fatalWriter, _ := rotatelogs.New(
+	//	path.Join(l.runtime, "fatal-%Y%m%d.log"),
+	//	//rotatelogs.WithLinkName(p+".fatal"),
+	//	//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
+	//	rotatelogs.WithRotationCount(10),
+	//	rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
+	//)
+	//panicWriter, _ := rotatelogs.New(
+	//	path.Join(l.runtime, "panic-%Y%m%d.log"),
+	//	//rotatelogs.WithLinkName(p+".panic"),
+	//	//rotatelogs.WithMaxAge(time.Duration(86400)*time.Second),
+	//	rotatelogs.WithRotationCount(10),
+	//	rotatelogs.WithRotationTime(time.Duration(86400)*time.Second),
+	//)
+
+	logsWriter, _ := rotatelogs.New(
+		path.Join(l.runtime, "logs-%Y%m%d.log"),
+		rotatelogs.WithRotationCount(10),                              //保留x天的数据
+		rotatelogs.WithRotationTime(time.Duration(86400)*time.Second), //每天分隔一次
 	)
 	Log.Hooks.Add(lfshook.NewHook(
 		lfshook.WriterMap{
-			logrus.InfoLevel:  infoWriter,
-			logrus.ErrorLevel: errorWriter,
-			logrus.DebugLevel: debugWriter,
-			logrus.TraceLevel: traceWriter,
-			logrus.FatalLevel: fatalWriter,
-			logrus.PanicLevel: panicWriter,
+			logrus.InfoLevel:  logsWriter,
+			logrus.ErrorLevel: logsWriter,
+			logrus.DebugLevel: logsWriter,
+			logrus.TraceLevel: logsWriter,
+			logrus.FatalLevel: logsWriter,
+			logrus.PanicLevel: logsWriter,
 		}, &logrus.TextFormatter{},
 	))
 	return Log
@@ -205,18 +210,12 @@ func (l *logger) newFile() *logrus.Logger {
 func New(options *Options) *logger {
 	if options == nil {
 		options = DefaultOptions()
-	} else if options.LogType == "" {
-		options.LogType = LOG_TYPE_FILE
 	} else if options.LogFilePath == "" {
 		//options.LogFilePath = "logs"
 	}
 	logger := logger{}
-	if options.LogType == LOG_TYPE_FILE {
-		logger.runtime = options.LogFilePath
-		logger.newLog = logger.newFile()
-	} else {
-		logger.newLog = logrus.New()
-	}
+	logger.runtime = options.LogFilePath
+	logger.newLog = logger.newFile()
 	logger.newLog.SetLevel(options.Level)
 	if logger.ErrorNew != nil {
 		fmt.Println("err", logger.ErrorNew.Error())
@@ -228,8 +227,6 @@ func New(options *Options) *logger {
 func DefaultOptions() *Options {
 	return &Options{
 		Level:       DefaultLevel,
-		LogType:     LOG_TYPE_FILE,
 		LogFilePath: "logs",
 	}
 }
-
