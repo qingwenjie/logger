@@ -41,7 +41,7 @@ type logger struct {
 type Options struct {
 	Level       logrus.Level
 	LogFilePath string
-	Depth       int
+	StackDepth  int
 }
 
 func (l *logger) Info(args ... interface{}) {
@@ -223,6 +223,7 @@ func New(options *Options) *logger {
 	logger.runtime = options.LogFilePath
 	logger.newLog = logger.newFile()
 	logger.newLog.SetLevel(options.Level)
+	logger.setStackDepth(options.StackDepth)
 	if logger.ErrorNew != nil {
 		fmt.Println("err", logger.ErrorNew.Error())
 		return nil
@@ -234,7 +235,7 @@ func DefaultOptions() *Options {
 	return &Options{
 		Level:       DefaultLevel,
 		LogFilePath: "logs",
-		Depth:       1,
+		StackDepth:  1,
 	}
 }
 
