@@ -54,6 +54,18 @@ func (l *logger) Infof(format string, args ... interface{}) {
 	l.newLog.WithField("call", stackGet(0)).Infof(format, args...)
 }
 
+func (l *logger) Warn(args ... interface{}) {
+	l.lock.Lock()
+	defer l.lock.Unlock()
+	l.newLog.WithField("call", stackGet(0)).Warn(args ...)
+}
+
+func (l *logger) Warnf(format string, args ... interface{}) {
+	l.lock.Lock()
+	defer l.lock.Unlock()
+	l.newLog.WithField("call", stackGet(0)).Warnf(format, args...)
+}
+
 func (l *logger) Error(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
