@@ -45,85 +45,85 @@ type Options struct {
 func (l *logger) Info(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Info(args ...)
+	l.newLog.WithField("call", stackGet(1)).Info(args ...)
 }
 
 func (l *logger) Infof(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Infof(format, args...)
+	l.newLog.WithField("call", stackGet(1)).Infof(format, args...)
 }
 
 func (l *logger) Warn(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Warn(args ...)
+	l.newLog.WithField("call", stackGet(1)).Warn(args ...)
 }
 
 func (l *logger) Warnf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Warnf(format, args...)
+	l.newLog.WithField("call", stackGet(1)).Warnf(format, args...)
 }
 
 func (l *logger) Error(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Error(args)
+	l.newLog.WithField("call", stackGet(1)).Error(args)
 }
 
 func (l *logger) Errorf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Errorf(format, args...)
+	l.newLog.WithField("call", stackGet(1)).Errorf(format, args...)
 }
 
 func (l *logger) Debug(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Debug(args)
+	l.newLog.WithField("call", stackGet(1)).Debug(args)
 }
 
 func (l *logger) Debugf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Debugf(format, args...)
+	l.newLog.WithField("call", stackGet(1)).Debugf(format, args...)
 }
 
 func (l *logger) Trace(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Trace(args)
+	l.newLog.WithField("call", stackGet(1)).Trace(args)
 }
 
 func (l *logger) Tracef(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Tracef(format, args...)
+	l.newLog.WithField("call", stackGet(1)).Tracef(format, args...)
 }
 
 func (l *logger) Fatal(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Fatal(args)
+	l.newLog.WithField("call", stackGet(1)).Fatal(args)
 }
 
 func (l *logger) Fatalf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Fatalf(format, args...)
+	l.newLog.WithField("call", stackGet(1)).Fatalf(format, args...)
 }
 
 func (l *logger) Panic(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Panic(args)
+	l.newLog.WithField("call", stackGet(1)).Panic(args)
 }
 
 func (l *logger) Panicf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.WithField("call", stackGet(0)).Panicf(format, args...)
+	l.newLog.WithField("call", stackGet(1)).Panicf(format, args...)
 }
 
 func (l *logger) newFile() *logrus.Logger {
