@@ -13,16 +13,17 @@ import (
 	"time"
 )
 
+type Level int
+
 const (
 	PanicLevel   = logrus.PanicLevel
 	FatalLevel   = logrus.FatalLevel
 	ErrorLevel   = logrus.ErrorLevel
+	WarnLevel    = logrus.WarnLevel
 	InfoLevel    = logrus.InfoLevel
 	DebugLevel   = logrus.DebugLevel
 	TraceLevel   = logrus.TraceLevel
 	DefaultLevel = TraceLevel
-	//LOG_TYPE_FILE = "FILE"
-	//LOG_TYPE_TEXT = "TEXT"
 )
 
 var (
@@ -37,87 +38,80 @@ type logger struct {
 }
 
 type Options struct {
-	Level logrus.Level
-	//LogType     string
+	Level       logrus.Level
 	LogFilePath string
 }
 
 func (l *logger) Info(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Info(fileLine(), args)
+	l.newLog.WithField("call", stackGet(0)).Info(args ...)
 }
 
 func (l *logger) Infof(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Infof(format, args...)
+	l.newLog.WithField("call", stackGet(0)).Infof(format, args...)
 }
 
 func (l *logger) Error(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Error(fileLine(), args)
+	l.newLog.WithField("call", stackGet(0)).Error(args)
 }
 
 func (l *logger) Errorf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Errorf(format, args...)
+	l.newLog.WithField("call", stackGet(0)).Errorf(format, args...)
 }
 
 func (l *logger) Debug(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Debug(fileLine(), args)
+	l.newLog.WithField("call", stackGet(0)).Debug(args)
 }
 
 func (l *logger) Debugf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Debugf(format, args...)
+	l.newLog.WithField("call", stackGet(0)).Debugf(format, args...)
 }
 
 func (l *logger) Trace(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Trace(fileLine(), args)
+	l.newLog.WithField("call", stackGet(0)).Trace(args)
 }
 
 func (l *logger) Tracef(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Tracef(format, args...)
+	l.newLog.WithField("call", stackGet(0)).Tracef(format, args...)
 }
 
 func (l *logger) Fatal(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Fatal(fileLine(), args)
+	l.newLog.WithField("call", stackGet(0)).Fatal(args)
 }
 
 func (l *logger) Fatalf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Fatalf(format, args...)
+	l.newLog.WithField("call", stackGet(0)).Fatalf(format, args...)
 }
 
 func (l *logger) Panic(args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Panic(fileLine(), args)
+	l.newLog.WithField("call", stackGet(0)).Panic(args)
 }
 
 func (l *logger) Panicf(format string, args ... interface{}) {
 	l.lock.Lock()
 	defer l.lock.Unlock()
-	l.newLog.Panicf(format, args...)
-}
-
-func fileLine() string {
-	_, file, line, _ := runtime.Caller(2)
-	file = filepath.Base(file)
-	return fmt.Sprintf("[%s:%d] ", file, line)
+	l.newLog.WithField("call", stackGet(0)).Panicf(format, args...)
 }
 
 func (l *logger) newFile() *logrus.Logger {
@@ -210,8 +204,6 @@ func (l *logger) newFile() *logrus.Logger {
 func New(options *Options) *logger {
 	if options == nil {
 		options = DefaultOptions()
-	} else if options.LogFilePath == "" {
-		//options.LogFilePath = "logs"
 	}
 	logger := logger{}
 	logger.runtime = options.LogFilePath
@@ -229,4 +221,12 @@ func DefaultOptions() *Options {
 		Level:       DefaultLevel,
 		LogFilePath: "logs",
 	}
+}
+
+func stackGet(depth int) string {
+	pc, _, line, ok := runtime.Caller(depth + 1)
+	if !ok {
+		return ""
+	}
+	return fmt.Sprintf("%v:%v", filepath.Base(runtime.FuncForPC(pc).Name()), line)
 }
